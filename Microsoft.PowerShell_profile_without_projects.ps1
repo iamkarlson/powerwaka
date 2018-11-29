@@ -5,8 +5,9 @@ function global:prompt {
   Write-Host($pwd.ProviderPath) -nonewline
   
   if($wakatime) {
-    $job = Start-Job -ScriptBlock {
-      wakatime --entity-type app --project Powershell;
+      Get-Job -State Completed|?{$_.Name.Contains("WakaJob")}|Remove-Job
+      $job = Start-Job -Name "WakaJob" -ScriptBlock {
+        wakatime --entity-type app --project Powershell;
     }
   }
   return ">"
