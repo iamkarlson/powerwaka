@@ -35,9 +35,6 @@ function global:prompt {
                 --project $gitFolder.Name `
                 --language PowerShell
             }
-            if($wakalog) {
-                [System.DateTime]::Now>>~/.powerwakalog
-            }
         }
     }
 
