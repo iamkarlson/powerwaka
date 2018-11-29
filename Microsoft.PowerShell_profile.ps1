@@ -17,23 +17,27 @@ function global:prompt {
         $job = Start-Job -ScriptBlock {
             $gitFolder = (Get-GitDirectory);
 
+            $command = "";
+            try{
+            $command = (Get-History -Count 1|select -Property CommandLine).CommandLine.Split(" ")[0].Replace("(","")
+            } catch{
+                $command = "error"
+            }
+            
             if($gitFolder -eq $null){
-                wakatime --write --entity-type app --entity Powershell;
-            } else {
-                $gitFolder = (get-item ($gitFolder).Replace(".git",""))
-
-                $command = "";
-                try{
-                    $command = (Get-History -Count 1|select -Property CommandLine).CommandLine.Split(" ")[0].Replace("(","")
-                } catch{
-                    $command = "error"
-                }
-
-                wakatime --write --plugin "powershell-wakatime-iamkarlson-plugin/$PLUGIN_VERSION" `
+                wakatime --write `
+                --plugin "powershell-wakatime-iamkarlson-plugin/$PLUGIN_VERSION" `
                 --entity-type app `
                 --entity "$command" `
-                --project $gitFolder.Name `
-                --language PowerShell
+                --language PowerShell;
+            } else {
+                $gitFolder = (get-item ($gitFolder).Replace(".git",""))
+                wakatime --write `
+                --plugin "powershell-wakatime-iamkarlson-plugin/$PLUGIN_VERSION" `
+                --entity-type app `
+                --entity "$command" `
+                --language PowerShell `
+                --project $gitFolder.Name;
             }
         }
     }
