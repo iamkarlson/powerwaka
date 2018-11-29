@@ -7,9 +7,7 @@ if($wakatime) {
 function global:prompt {
     $realLASTEXITCODE = $LASTEXITCODE
 
-    $new_pwd = $pwd.ProviderPath.Replace("$home","~");
-
-    Write-Host($new_pwd) -nonewline
+    Write-Host($pwd.ProviderPath) -nonewline
 
     Write-VcsStatus
 
@@ -39,5 +37,5 @@ function global:prompt {
     }
 
     $global:LASTEXITCODE = $realLASTEXITCODE
-    return "=]"
+    return ">"
 }
