@@ -24,7 +24,7 @@ function global:prompt {
 
                 $command = "";
                 try{
-                $command = (Get-History -Count 1|select -Property CommandLine).CommandLine.Split(" ")[0].Replace("(","")
+                    $command = (Get-History -Count 1|select -Property CommandLine).CommandLine.Split(" ")[0].Replace("(","")
                 } catch{
                     $command = "error"
                 }
