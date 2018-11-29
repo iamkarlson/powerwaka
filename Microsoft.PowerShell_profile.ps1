@@ -14,7 +14,8 @@ function global:prompt {
 
 
     if($wakatime) {
-        $job = Start-Job -ScriptBlock {
+        Get-Job -State Completed|?{$_.Name.Contains("WakaJob")}|Remove-Job
+        $job = Start-Job -Name "WakaJob" -ScriptBlock {
             $gitFolder = (Get-GitDirectory);
 
             $command = "";
