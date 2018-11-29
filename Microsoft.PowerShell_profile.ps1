@@ -14,25 +14,30 @@ function global:prompt {
 
 
     if($wakatime) {
+        $job = Start-Job -ScriptBlock {
+            $gitFolder = (Get-GitDirectory);
 
-        $gitFolder = (get-item (Get-GitDirectory).Replace(".git",""))
+            if($gitFolder -eq $null){
+                wakatime --write --entity-type app --entity Powershell;
+            } else {
+                $gitFolder = (get-item ($gitFolder).Replace(".git",""))
 
-        if($gitFolder){
-
-            try{
+                $command = "";
+                try{
                 $command = (Get-History -Count 1|select -Property CommandLine).CommandLine.Split(" ")[0].Replace("(","")
-            } catch{
-                $command = "error"
-            }
+                } catch{
+                    $command = "error"
+                }
 
-            wakatime `
-            --plugin "powershell-wakatime-iamkarlson-plugin/$PLUGIN_VERSION" `
-            --entity-type app `
-            --entity $command `
-            --project $gitFolder.Name `
-            --language PowerShell
-        } else {
-            wakatime --entity-type app --project Powershell;
+                wakatime --write --plugin "powershell-wakatime-iamkarlson-plugin/$PLUGIN_VERSION" `
+                --entity-type app `
+                --entity "$command" `
+                --project $gitFolder.Name `
+                --language PowerShell
+            }
+            if($wakalog) {
+                [System.DateTime]::Now>>~/.powerwakalog
+            }
         }
     }
 
