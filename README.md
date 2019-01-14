@@ -13,15 +13,11 @@ When you installed posh-git you should have your powershell profile similar to t
 
 ```Powershell
 
-function global:prompt {
-    $realLASTEXITCODE = $LASTEXITCODE
+function prompt {
+    # Your non-prompt logic here
 
-    Write-Host($pwd.ProviderPath) -nonewline
-
-    Write-VcsStatus
-
-    $global:LASTEXITCODE = $realLASTEXITCODE
-    return "> "
+    # Have posh-git display its default prompt
+    & $GitPromptScriptBlock
 }
 ```
 
@@ -31,7 +27,10 @@ So, we're gonna replace it with our brand new stylish profile. Take it [here](ht
 C:\Users\%USER_NAME%\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
 ```
 
-Don't forget to install wakatime-cli
+Don't forget to install wakatime-cli.
+
+### One more thing
+If you're using powershell 6 (core, or whatever) you have to put your profile specifically to the place of installation.
 
 ```Powershell
 pip install wakatime
@@ -39,6 +38,7 @@ pip install wakatime
 
 And here you go!
 
-### Alternative way (worst one)
 
-You don't have posh-git installed and don't want to install it. Ok, fine. Just take another profile [here](https://github.com/iamkarlson/powerwaka/blob/master/Microsoft.PowerShell_profile_without_projects.ps1).
+## Live working example
+
+Check-out my [dotfiles](https://github.com/iamkarlson/dotfiles) for further info.
