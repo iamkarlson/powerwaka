@@ -16,7 +16,6 @@ function Send-Wakatime(){
     if(!(Test-Wakatime)) {
         return;
     }
-    $PLUGIN_VERSION = "0.2";
     $command = "";
     try {
         $historyItem = (Get-History |select -Last 1)
@@ -39,8 +38,10 @@ function Send-Wakatime(){
             return;
         }
 
+        $PLUGIN_VERSION = "0.2";
+
         $wakaCommand = 'wakatime --write'
-        $wakaCommand =$wakaCommand + ' --plugin "powershell-wakatime-iamkarlson-plugin/$PLUGIN_VERSION"'
+        $wakaCommand =$wakaCommand + " --plugin `"powershell-wakatime-iamkarlson-plugin/$PLUGIN_VERSION`""
         $wakaCommand =$wakaCommand + ' --entity-type app '
         $wakaCommand =$wakaCommand + ' --entity "'
         $wakaCommand =$wakaCommand +  $command
